@@ -156,7 +156,7 @@ public class UserDAO {
             if (conn != null) {
                 String sql = "Select userID "
                         + " FROM tblUser "
-                        + " Where UserID=?";
+                        + " Where userID=?";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, userID);
                 rs = stm.executeQuery();
@@ -193,6 +193,8 @@ public class UserDAO {
                 stm.setString(2, user.getFullname());
                 stm.setString(3, user.getRole());
                 stm.setString(4, user.getPassword());
+                stm.executeUpdate();
+
             }
         } catch (Exception e) {
 

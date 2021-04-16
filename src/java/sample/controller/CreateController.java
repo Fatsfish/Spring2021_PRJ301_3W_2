@@ -45,19 +45,19 @@ public class CreateController extends HttpServlet {
             String confirm = request.getParameter("confirm");
             boolean check = false;
             UserErrorDTO error = new UserErrorDTO("", "", "", "", "");
-            if (userID.length() < 3 && userID.length() > 10) {
+            if (userID.length() < 3 || userID.length() > 10) {
                 check = true;
                 error.setUserIDError("User ID must be in between 3 and 10!");
             }
-            if (fullName.length() < 5 && userID.length() > 50) {
+            if (fullName.length() < 5 || userID.length() > 50) {
                 check = true;
                 error.setFullNameError("Full name must be in between 5 and 50!");
             }
-            if (roleID.length() < 2 && userID.length() > 10) {
+            if (roleID.length() < 2 || userID.length() > 10) {
                 check = true;
                 error.setRoleIDError("Role ID must be in between 2 and 10!");
             }
-            if (password.length() < 6 && userID.length() > 10) {
+            if (password.length() < 6 || userID.length() > 10) {
                 check = true;
                 error.setPasswordError("Password must be in between 6 and 10!");
             }
