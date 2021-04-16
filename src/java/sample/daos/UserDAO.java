@@ -145,4 +145,64 @@ public class UserDAO {
 
         return check;
     }
+
+    public boolean checkDuplicate(String userID) throws SQLException {
+        boolean check = false;
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                String sql = "Select userID "
+                        + " FROM tblUser "
+                        + " Where UserID=?";
+                stm = conn.prepareStatement(sql);
+                stm.setString(1, userID);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    check = true;
+                }
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return check;
+    }
+
+    public void insert(UserDTO user) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stm = null;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                String sql = "INSERT INTO tblUser(userID, fullName, roleID, password) "
+                        + " VALUES(?,?,?,?)";
+                stm = conn.prepareStatement(sql);
+                stm.setString(1, user.getUserID());
+                stm.setString(2, user.getFullname());
+                stm.setString(3, user.getRole());
+                stm.setString(4, user.getPassword());
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
 }
