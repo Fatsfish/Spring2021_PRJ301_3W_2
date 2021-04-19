@@ -6,28 +6,23 @@
 package sample.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import sample.dtos.CartDTO;
+import sample.dtos.TeaDTO;
 
 /**
  *
  * @author User-PC
  */
-public class MainController extends HttpServlet {
+public class AddController extends HttpServlet {
 
+    private static final String SUCCESS = "shopping.jsp";
     private static final String ERROR = "error.jsp";
-    private static final String LOGIN = "LoginController";
-    private static final String LOGOUT = "LogoutController";
-    private static final String SEARCH = "SearchController";
-    private static final String DELETE = "DeleteController";
-    private static final String UPDATE = "UpdateController";
-    private static final String CREATE = "CreateController";
-    private static final String ADD = "AddController";
-    private static final String REMOVE = "RemoveController";
-    private static final String EDIT = "EditController";
-    private static final String VIEW = "viewCart.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,35 +38,27 @@ public class MainController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String action = request.getParameter("action");
-            if ("Login".equals(action)) {
-                url = LOGIN;
-            } else if ("Logout".equals(action)) {
-                url = LOGOUT;
-            } else if ("Search".equals(action)) {
-                url = SEARCH;
-            } else if ("Delete".equals(action)) {
-                url = DELETE;
-            } else if ("Update".equals(action)) {
-                url = UPDATE;
-            } else if ("Create".equals(action)) {
-                url = CREATE;
-            } else if ("Add".equals(action)) {
-                url = ADD;
-            } else if ("View".equals(action)) {
-                url = VIEW;
-            } else if ("Remove".equals(action)) {
-                url = REMOVE;
-            } else if ("Edit".equals(action)) {
-                url = EDIT;
+            String teaStr = request.getParameter("cmbTea");
+            String tmp[] = teaStr.split("-");
+            String id = tmp[0];
+            String name = tmp[1];
+            double price = Double.parseDouble(tmp[2]);
+            int quantity = 1;
+            TeaDTO tea = new TeaDTO(id, name, quantity, price);
+            HttpSession session = request.getSession(true);
+            CartDTO cart = (CartDTO) session.getAttribute("CART");
+            if (cart == null) {
+                cart = new CartDTO();
             }
-
+            cart.add(tea);
+            session.setAttribute("CART", cart);
+            request.setAttribute("MESSAGE", "You have bought " + name + " successfully!");
+            url = SUCCESS;
         } catch (Exception e) {
-
+            log("Error at AddController " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
