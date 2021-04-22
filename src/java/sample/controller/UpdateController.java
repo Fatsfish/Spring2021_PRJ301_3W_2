@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import sample.daos.UserDAO;
 import sample.dtos.UserDTO;
 
@@ -41,10 +42,24 @@ public class UpdateController extends HttpServlet {
             String fullName = request.getParameter("fullName");
             String roleID = request.getParameter("roleID");
             String password = "";
+            HttpSession session = request.getSession();
+            String LogID = "";
+            UserDTO LogUser = (UserDTO) session.getAttribute("LOGIN_USER");
+            if (session.getAttribute("LOGIN_USER") != null) {
+                LogID = ((UserDTO) session.getAttribute("LOGIN_USER")).getUserID();
+            }
             UserDTO user = new UserDTO(userID, fullName, roleID, password);
             UserDAO dao = new UserDAO();
             boolean check = dao.update(user);
             if (check) {
+                url = SUCCESS;
+                if (!LogID.equals(userID)) {
+                    LogUser.setFullname(fullName);
+                    LogUser.setRole(roleID);
+                    request.setAttribute("LOGIN_USER", LogUser);
+                }
+            } else {
+                request.setAttribute("DELETE_ERROR", "User is logging in!");
                 url = SUCCESS;
             }
         } catch (Exception e) {

@@ -20,54 +20,59 @@
             <a href="login.html">Please login first</a>
         </c:if>
         <c:if test="${not empty sessionScope.LOGIN_USER}">
-            <h1>Welcome:${sessionScope.LOGIN_USER.fullname}</h1>
-            <form action="MainController"> 
-                <input type="submit" name="action" value="Logout"/>
-            </form>
-            <form action="MainController">
-                Search <input type="text" name="search" value="${param.search}"/>
-                <input type="submit" name="action" value="Search"/>
-            </form>
-            <c:if test="${not empty requestScope.LIST_USER}">
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>User ID</th>
-                            <th>Full Name</th>
-                            <th>Role ID</th>
-                            <th>Password</th>
-                            <th>Delete</th>
-                            <th>Update</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="user" varStatus="counter" items="${requestScope.LIST_USER}">
-                        <form action="MainController">
+            <c:if test="${sessionScope.LOGIN_USER.role ne "AD   "}">
+                <c:redirect url="login.html"></c:redirect>
+            </c:if>
+            <c:if test="${sessionScope.LOGIN_USER.role == "AD   "}">
+                <h1>Welcome:${sessionScope.LOGIN_USER.fullname}</h1>
+                <form action="MainController"> 
+                    <input type="submit" name="action" value="Logout"/>
+                </form>
+                <form action="MainController">
+                    Search <input type="text" name="search" value="${param.search}"/>
+                    <input type="submit" name="action" value="Search"/>
+                </form>
+                <c:if test="${not empty requestScope.LIST_USER}">
+                    <table border="1">
+                        <thead>
                             <tr>
-                                <td>${counter.count}</td>
-                                <td>${user.userID}</td>
-                                <td>
-                                    <input type="text" name="fullName" value="${user.fullname}">
-                                </td>
-                                <td>                        
-                                    <input type="text" name="roleID" value="${user.role}">
-                                </td>
-                                <td>${user.password}</td>
-                                <td>
-                                    <a href="MainController?search=${param.search}&action=Delete&userID=${user.userID}">Delete</a>
-                                </td>
-                                <td>
-                                    <input type="hidden" name="userID" value="${user.userID}">
-                                    <input type="hidden" name="search" value="${param.search}">
-                                    <input type="submit" name="action" value="Update">
-                                </td>
+                                <th>No</th>
+                                <th>User ID</th>
+                                <th>Full Name</th>
+                                <th>Role ID</th>
+                                <th>Password</th>
+                                <th>Delete</th>
+                                <th>Update</th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="user" varStatus="counter" items="${requestScope.LIST_USER}">
+                            <form action="MainController">
+                                <tr>
+                                    <td>${counter.count}</td>
+                                    <td>${user.userID}</td>
+                                    <td>
+                                        <input type="text" name="fullName" value="${user.fullname}">
+                                    </td>
+                                    <td>                        
+                                        <input type="text" name="roleID" value="${user.role}">
+                                    </td>
+                                    <td>${user.password}</td>
+                                    <td>
+                                        <a href="MainController?search=${param.search}&action=Delete&userID=${user.userID}">Delete</a>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="userID" value="${user.userID}">
+                                        <input type="hidden" name="search" value="${param.search}">
+                                        <input type="submit" name="action" value="Update">
+                                    </td>
+                                </tr>
+                            </form>
                         </c:forEach>
-                    </form>
-                </c:if>
-            </tbody>
-        </table>
+                    </c:if>
+                </tbody>
+            </table>
+        </c:if>    
     </c:if>
 </body>
 <h1> ${requestScope.DELETE_ERROR}</h1>
