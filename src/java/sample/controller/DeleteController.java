@@ -11,7 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import sample.daos.UserDAO;
+import sample.dtos.UserDTO;
 
 /**
  *
@@ -21,6 +23,7 @@ public class DeleteController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
     private static final String SUCCESS = "SearchController";
+    private static final String DELETE_ERROR = "search.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,16 +34,25 @@ public class DeleteController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+        HttpSession session = request.getSession();
+        String LogID = "";
+        if (session.getAttribute("LOGIN_USER") != null) {
+            LogID = ((UserDTO) session.getAttribute("LOGIN_USER")).getUserID();
+        }
         try {
             String userID = request.getParameter("userID");
-            UserDAO dao = new UserDAO();
-            boolean check = dao.delete(userID);
-            if (check) {
+            if (!LogID.equals(userID)) {
+                UserDAO dao = new UserDAO();
+                boolean check = dao.delete(userID);
+                if (check) {
+                    url = SUCCESS;
+                }
+            } else {
+                request.setAttribute("DELETE_ERROR", "User is logging in!");
                 url = SUCCESS;
             }
         } catch (Exception e) {
