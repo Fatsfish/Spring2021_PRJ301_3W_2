@@ -3,7 +3,7 @@
     Created on : Apr 19, 2021, 11:13:41 AM
     Author     : User-PC
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,13 +22,21 @@
             </select>
             <input type="submit" name="action" value="Add">
         </form>
-        <%
-            String message = (String) request.getAttribute("MESSAGE");
-            if (message == null) {
-                message = "";
-            }
-        %>
-        <h1><%=message%></h1>
-        <a href="viewCart.jsp">View Cart</a>
-    </body>
+    <c:if test="${empty sessionScope.LOGIN_USER}">
+        Have an account?<a href="login.html">Login here!</a>
+    </c:if>
+    <c:if test="${not empty sessionScope.LOGIN_USER}">
+        <form action="MainController"> 
+            <input type="submit" name="action" value="Logout"/>
+        </form>
+    </c:if>
+    <%
+        String message = (String) request.getAttribute("MESSAGE");
+        if (message == null) {
+            message = "";
+        }
+    %>
+    <h1><%=message%></h1>
+    <a href="viewCart.jsp">View Cart</a>
+</body>
 </html>
