@@ -20,18 +20,26 @@
             <a href="login.html">Please login first</a>
         </c:if>
         <c:if test="${not empty sessionScope.LOGIN_USER}">
-            <c:if test="${sessionScope.LOGIN_USER.role ne "AD   "}">
+            <c:if test="${sessionScope.LOGIN_USER.role ne 'AD   '}">
                 <c:redirect url="login.html"></c:redirect>
             </c:if>
-            <c:if test="${sessionScope.LOGIN_USER.role == "AD   "}">
+            <c:if test="${sessionScope.LOGIN_USER.role == 'AD   '}">
                 <h1>Welcome:${sessionScope.LOGIN_USER.fullname}</h1>
                 <form action="MainController"> 
                     <input type="submit" name="action" value="Logout"/>
                 </form>
-                <form action="MainController">
-                    Search <input type="text" name="search" value="${param.search}"/>
-                    <input type="submit" name="action" value="Search"/>
-                </form>
+                <c:if test="${not empty param.search}">
+                    <form action="MainController">
+                        Search <input type="text" name="search" value="${param.search}"/>
+                        <input type="submit" name="action" value="Search"/>
+                    </form>
+                </c:if> 
+                <c:if test="${empty param.search}">
+                    <form action="MainController">
+                        Search <input type="text" name="search" value=""/>
+                        <input type="submit" name="action" value="Search"/>
+                    </form>
+                </c:if>
                 <c:if test="${not empty requestScope.LIST_USER}">
                     <table border="1">
                         <thead>

@@ -20,7 +20,7 @@ import sample.dtos.TeaDTO;
  * @author User-PC
  */
 public class EditController extends HttpServlet {
-    
+
     private static final String SUCCESS = "viewCart.jsp";
     private static final String ERROR = "error.jsp";
 
@@ -40,6 +40,9 @@ public class EditController extends HttpServlet {
         try {
             String id = request.getParameter("id");
             int quantity = Integer.parseInt(request.getParameter("quantity"));
+            if (quantity < 0) {
+                quantity = 0;
+            }
             HttpSession session = request.getSession();
             CartDTO cart = (CartDTO) session.getAttribute("CART");
             TeaDTO teaDTO = null;
@@ -51,9 +54,9 @@ public class EditController extends HttpServlet {
             }
             cart.update(id, teaDTO);
             session.setAttribute("CART", cart);
-            url=SUCCESS;
+            url = SUCCESS;
         } catch (Exception e) {
-            
+
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

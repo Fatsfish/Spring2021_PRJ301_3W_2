@@ -12,23 +12,17 @@
         <title>Create New User</title>
     </head>
     <body>
-        <%
-            UserErrorDTO userError = (UserErrorDTO) request.getAttribute("ERROR_USER");
-            if (userError == null) {
-                userError = new UserErrorDTO("", "", "", "", "");
-            }
-        %>
         <form action="MainController" method="POST"></br>
             User ID<input type="text" name="userID" required=""></br>
-            <%=userError.getUserIDError()%></br>
+            ${requestScope.ERROR_USER.userIDError}            
             Full Name<input type="text" name="fullName" required=""></br>
-            <%=userError.getFullNameError() %></br>
+            ${requestScope.ERROR_USER.fullNameError}            
             Role ID<input type="text" name="roleID" required=""></br>
-            <%=userError.getRoleIDError()%></br>
+            ${requestScope.ERROR_USER.roleIDError}            
             Password<input type="password" name="password" required=""></br>
-            <%=userError.getPasswordError()%></br>
+            ${requestScope.ERROR_USER.passwordError}            
             Confirm<input type="password" name="confirm" required=""></br>
-            <%=userError.getConfirmError()%></br>
+            ${requestScope.ERROR_USER.confirmError}            
             <input type="submit" name="action" value="Create"></br>
             <input type="reset" value="Reset"></br>
         </form>

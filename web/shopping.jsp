@@ -30,13 +30,7 @@
             <input type="submit" name="action" value="Logout"/>
         </form>
     </c:if>
-    <%
-        String message = (String) request.getAttribute("MESSAGE");
-        if (message == null) {
-            message = "";
-        }
-    %>
-    <h1><%=message%></h1>
+    <h1>${requestScope.MESSAGE}</h1>
     <a href="viewCart.jsp">View Cart</a>
 </body>
 </html>
