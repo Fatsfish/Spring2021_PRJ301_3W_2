@@ -40,7 +40,7 @@
                         <tr>
                             <td>${counter.count}</td>
                         <td>
-                            <input type="text" name="id" value="${rows.value.getID()}">
+                            <input type="text" name="id" value="${rows.value.getId()}">
                         </td>
                         <td>${rows.value.name}</td>
                         <td>
